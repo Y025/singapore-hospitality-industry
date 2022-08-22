@@ -415,7 +415,7 @@ sub['region_code'] = code_region_list
 
 ## REGION CHOROPLETH FIX!!
 import json
-with open ("C:/Users/yoelw/Downloads/neighbourhoods.geojson", 'r') as jsonFile:
+with open ("datas/neighbourhoods.geojson", 'r') as jsonFile:
     singmapdata = json.load(jsonFile)
 
 choropleth2 = folium.Choropleth(
