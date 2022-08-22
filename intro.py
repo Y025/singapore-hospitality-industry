@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import math 
+import math
 import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
@@ -14,11 +14,11 @@ def add_categorical_legend(folium_map, title, colors, labels):
         raise ValueError("colors and labels must have the same length.")
 
     color_by_label = dict(zip(labels, colors))
-    
-    legend_categories = ""     
+
+    legend_categories = ""
     for label, color in color_by_label.items():
         legend_categories += f"<li><span style='background:{color}'></span>{label}</li>"
-        
+
     legend_html = f"""
     <div id='maplegend' class='maplegend'>
       <div class='legend-title'>{title}</div>
@@ -50,7 +50,7 @@ def add_categorical_legend(folium_map, title, colors, labels):
         oneTimeExecution()
         </script>
       """
-   
+
 
     css = """
 
@@ -111,17 +111,17 @@ def add_categorical_legend(folium_map, title, colors, labels):
 
 
 #Load the data
-df1 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_1.csv")
-df2 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_2.csv")
-df3 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_3.csv")
-df4 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_4.csv")
+df1 = pd.read_csv("datas/listings_1.csv")
+df2 = pd.read_csv("datas/listings_2.csv")
+df3 = pd.read_csv("datas/listings_3.csv")
+df4 = pd.read_csv("datas/listings_4.csv")
 df = pd.concat([df1, df2, df3, df4], axis = 0)
 
 #Reset the index
 df.reset_index(inplace = True, drop=True)
 
 # Changing these columns into datetime format
-date_columns = ['host_since', 'calendar_updated', 
+date_columns = ['host_since', 'calendar_updated',
                 'calendar_last_scraped', 'first_review',
                 'last_review']
 df[date_columns] = df[date_columns].apply(pd.to_datetime)
@@ -279,7 +279,7 @@ ax12.axes[0,1].set_ylabel('Number of Reviews')
 ax12.axes[0,1].set_xlabel('Region')
 ax12.axes[0,0].set_title('Mean Number of Reviews per Region')
 ax12.axes[0,1].set_title('Sum Number of Reviews per Region')
-ax12 = plt.subplots_adjust(hspace=0.4, wspace=0.4)            
+ax12 = plt.subplots_adjust(hspace=0.4, wspace=0.4)
 
 
 #Visualization : isntant bookable vs Number of Reviewson mean
@@ -330,7 +330,7 @@ ax20 = plt.xlabel('Number of Listings', fontsize = 12)
 #Visualization : Listings price on map
 fig21, ax21 = plt.subplots()
 fig21 = plt.figure(figsize = (10,8))
-i = plt.imread('C:/Users/yoelw/Downloads/singapore data/map2.png')
+i = plt.imread('datas/map2.png')
 ax21 = plt.imshow(i, zorder=0, extent=[103.638880, 103.969660,  1.245350,1.488140])
 ax21 = plt.gca()
 ax21 = sub.plot(kind = 'scatter', x='longitude', y='latitude', label = 'availabilty_365',
@@ -466,14 +466,14 @@ for i in range(0, 55):
   n_list.append(singmapdata['features'][i]['properties']['neighbourhood'])
 
 
-#Obtain the latitude and langitude  
+#Obtain the latitude and langitude
 lon = list(map(lambda p: p.x, centro))
 lat = list(map(lambda p: p.y, centro))
 sub_neig_f = pd.DataFrame({'Neighbourhood':n_list,
                            'Longitude':lon,
                            'Latitude':lat})
 
-#Prepare the dataframe                          
+#Prepare the dataframe
 sub_neig_pair = sub.groupby('neighbourhood_cleansed')['number_of_reviews'].sum()
 sub_neig_pair = sub_neig_pair.reset_index()
 sub_neig_pair1 = sub.groupby('neighbourhood_cleansed')['number_of_reviews'].count()
@@ -557,9 +557,9 @@ with tab01:
                     icon_size=(32,32),
                     icon_anchor = (0, 0),
                     html = f'<div style="font-size:15pt;color:white;text-shadow: 1px 2px #5c5a5a">{nor}</div>')
-                ).add_to(mn) 
+                ).add_to(mn)
         folium_static(mn)
-        st.subheader("Number of Listings Per Neighbourhood")         
+        st.subheader("Number of Listings Per Neighbourhood")
         st.pyplot(fig = fig20)
     elif neig_inf == "Sum Number of Reviews Per Neighbourhood":
         choropleth1 = folium.Choropleth(
@@ -581,8 +581,8 @@ with tab01:
                         html = f'<div style="font-size:15pt;color:white;text-shadow: 1px 2px #5c5a5a">{nor}</div>')
                         ).add_to(mn)
         folium_static(mn)
-        st.subheader("Sum Number of Reviews Per Neighbourhood")         
-        st.pyplot(fig = fig24) 
+        st.subheader("Sum Number of Reviews Per Neighbourhood")
+        st.pyplot(fig = fig24)
 with tab02:
     reg_inf = st.radio("Select The Information", ['Number of Listings Per Region', 'Sum Number of Reviews Per Region'])
     if reg_inf == 'Sum Number of Reviews Per Region':
@@ -757,20 +757,20 @@ with tab2:
         with col3:
             st.pyplot(fig = fig18)
         with col4:
-            st.subheader('Bedrooms vs Number of Reviews Mean')     
+            st.subheader('Bedrooms vs Number of Reviews Mean')
 
 st.markdown("---")
 
 st.subheader("Price and Number of Reviews Movement")
 #Price data
-df_calendar = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/calendar_4.csv")
+df_calendar = pd.read_csv("datas/calendar_4.csv")
 df_calendar['date'] = pd.to_datetime(df_calendar['date'], format='%Y-%m-%d')
 df_calendar = df_calendar[(df_calendar['date']>= '2021-09-29') & (df_calendar['date']<= '2022-06-22')]
 df_calendar['price'] = df_calendar['price'].apply(lambda x: str(x).replace('$',''))
 df_calendar['price'] = pd.to_numeric(df_calendar['price'], errors = 'coerce')
 
 #Reviews data
-df_reviews = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/reviews_1.csv")
+df_reviews = pd.read_csv("datas/reviews_1.csv")
 df_reviews['date'] = pd.to_datetime(df_reviews['date'], format='%Y-%m-%d')
 df_reviews = df_reviews[(df_reviews['date']>= '2021-09-29') & (df_reviews['date']<= '2022-06-22')]
 df_reviews.head()
@@ -835,4 +835,3 @@ with col10:
     "Created by:    Yoel"
 with col11:
     "Data Obtained From :   Inside Airbnb: Get the Data "
-
