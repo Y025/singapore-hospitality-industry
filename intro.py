@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import math
+import math 
 import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
@@ -14,11 +14,11 @@ def add_categorical_legend(folium_map, title, colors, labels):
         raise ValueError("colors and labels must have the same length.")
 
     color_by_label = dict(zip(labels, colors))
-
-    legend_categories = ""
+    
+    legend_categories = ""     
     for label, color in color_by_label.items():
         legend_categories += f"<li><span style='background:{color}'></span>{label}</li>"
-
+        
     legend_html = f"""
     <div id='maplegend' class='maplegend'>
       <div class='legend-title'>{title}</div>
@@ -50,7 +50,7 @@ def add_categorical_legend(folium_map, title, colors, labels):
         oneTimeExecution()
         </script>
       """
-
+   
 
     css = """
 
@@ -111,17 +111,17 @@ def add_categorical_legend(folium_map, title, colors, labels):
 
 
 #Load the data
-df1 = pd.read_csv("datas/listings_1.csv")
-df2 = pd.read_csv("datas/listings_2.csv")
-df3 = pd.read_csv("datas/listings_3.csv")
-df4 = pd.read_csv("datas/listings_4.csv")
+df1 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_1.csv")
+df2 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_2.csv")
+df3 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_3.csv")
+df4 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_4.csv")
 df = pd.concat([df1, df2, df3, df4], axis = 0)
 
 #Reset the index
 df.reset_index(inplace = True, drop=True)
 
 # Changing these columns into datetime format
-date_columns = ['host_since', 'calendar_updated',
+date_columns = ['host_since', 'calendar_updated', 
                 'calendar_last_scraped', 'first_review',
                 'last_review']
 df[date_columns] = df[date_columns].apply(pd.to_datetime)
@@ -279,7 +279,7 @@ ax12.axes[0,1].set_ylabel('Number of Reviews')
 ax12.axes[0,1].set_xlabel('Region')
 ax12.axes[0,0].set_title('Mean Number of Reviews per Region')
 ax12.axes[0,1].set_title('Sum Number of Reviews per Region')
-ax12 = plt.subplots_adjust(hspace=0.4, wspace=0.4)
+ax12 = plt.subplots_adjust(hspace=0.4, wspace=0.4)            
 
 
 #Visualization : isntant bookable vs Number of Reviewson mean
@@ -330,7 +330,7 @@ ax20 = plt.xlabel('Number of Listings', fontsize = 12)
 #Visualization : Listings price on map
 fig21, ax21 = plt.subplots()
 fig21 = plt.figure(figsize = (10,8))
-i = plt.imread('datas/map2.png')
+i = plt.imread('C:/Users/yoelw/Downloads/singapore data/map2.png')
 ax21 = plt.imshow(i, zorder=0, extent=[103.638880, 103.969660,  1.245350,1.488140])
 ax21 = plt.gca()
 ax21 = sub.plot(kind = 'scatter', x='longitude', y='latitude', label = 'availabilty_365',
@@ -415,7 +415,7 @@ sub['region_code'] = code_region_list
 
 ## REGION CHOROPLETH FIX!!
 import json
-with open ("datas/neighbourhoods.geojson", 'r') as jsonFile:
+with open ("C:/Users/yoelw/Downloads/neighbourhoods.geojson", 'r') as jsonFile:
     singmapdata = json.load(jsonFile)
 
 choropleth2 = folium.Choropleth(
@@ -466,14 +466,14 @@ for i in range(0, 55):
   n_list.append(singmapdata['features'][i]['properties']['neighbourhood'])
 
 
-#Obtain the latitude and langitude
+#Obtain the latitude and langitude  
 lon = list(map(lambda p: p.x, centro))
 lat = list(map(lambda p: p.y, centro))
 sub_neig_f = pd.DataFrame({'Neighbourhood':n_list,
                            'Longitude':lon,
                            'Latitude':lat})
 
-#Prepare the dataframe
+#Prepare the dataframe                          
 sub_neig_pair = sub.groupby('neighbourhood_cleansed')['number_of_reviews'].sum()
 sub_neig_pair = sub_neig_pair.reset_index()
 sub_neig_pair1 = sub.groupby('neighbourhood_cleansed')['number_of_reviews'].count()
@@ -557,9 +557,9 @@ with tab01:
                     icon_size=(32,32),
                     icon_anchor = (0, 0),
                     html = f'<div style="font-size:15pt;color:white;text-shadow: 1px 2px #5c5a5a">{nor}</div>')
-                ).add_to(mn)
+                ).add_to(mn) 
         folium_static(mn)
-        st.subheader("Number of Listings Per Neighbourhood")
+        st.subheader("Number of Listings Per Neighbourhood")         
         st.pyplot(fig = fig20)
     elif neig_inf == "Sum Number of Reviews Per Neighbourhood":
         choropleth1 = folium.Choropleth(
@@ -581,8 +581,8 @@ with tab01:
                         html = f'<div style="font-size:15pt;color:white;text-shadow: 1px 2px #5c5a5a">{nor}</div>')
                         ).add_to(mn)
         folium_static(mn)
-        st.subheader("Sum Number of Reviews Per Neighbourhood")
-        st.pyplot(fig = fig24)
+        st.subheader("Sum Number of Reviews Per Neighbourhood")         
+        st.pyplot(fig = fig24) 
 with tab02:
     reg_inf = st.radio("Select The Information", ['Number of Listings Per Region', 'Sum Number of Reviews Per Region'])
     if reg_inf == 'Sum Number of Reviews Per Region':
@@ -698,13 +698,13 @@ with tab1:
         with col1:
             st.pyplot(fig = fig9)
         with col2:
-            st.subheader("Bathrooms vs Number of Reviews on Count")
+            st.subheader("Bathrooms vs Number of Reviews on Mean")
             st.write("There are spikes of mean number of reviews for bathrooms 4.5, 7.5, and 8.5.")
         col3, col4 = st.columns([2,1])
         with col3:
             st.pyplot(fig = fig10)
         with col4:
-            st.subheader("Bathrooms vs Number of Reviews on Mean")
+            st.subheader("Bathrooms vs Number of Reviews on Count")
             st.write("Majority of the listings have bathrooms ranging from 1, 2 and 3.")
 # Low Parameter Visualization
 with tab2:
@@ -757,34 +757,63 @@ with tab2:
         with col3:
             st.pyplot(fig = fig18)
         with col4:
-            st.subheader('Bedrooms vs Number of Reviews Mean')
+            st.subheader('Bedrooms vs Number of Reviews Mean')     
 
 st.markdown("---")
 
 st.subheader("Price and Number of Reviews Movement")
 #Price data
-df_calendar = pd.read_csv("datas/calendar_4.csv")
+df_calendar = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/calendar_4.csv")
 df_calendar['date'] = pd.to_datetime(df_calendar['date'], format='%Y-%m-%d')
 df_calendar = df_calendar[(df_calendar['date']>= '2021-09-29') & (df_calendar['date']<= '2022-06-22')]
 df_calendar['price'] = df_calendar['price'].apply(lambda x: str(x).replace('$',''))
 df_calendar['price'] = pd.to_numeric(df_calendar['price'], errors = 'coerce')
 
+df_calendar = df_calendar.merge(sub, left_on  = 'listing_id', right_on= 'id', how='right')
+df_calendar = df_calendar[['listing_id', 'date', 'available', 'price_x', 'neighbourhood_group_cleansed']]
+df_calendar_north = df_calendar[df_calendar['neighbourhood_group_cleansed']=='North Region']
+df_calendar_east = df_calendar[df_calendar['neighbourhood_group_cleansed']=='East Region']
+df_calendar_west = df_calendar[df_calendar['neighbourhood_group_cleansed']=='West Region']
+df_calendar_northeast = df_calendar[df_calendar['neighbourhood_group_cleansed']=='North-East Region']
+df_calendar_central = df_calendar[df_calendar['neighbourhood_group_cleansed']=='Central Region']
+
+df_calendar_north = df_calendar_north.resample('M', on='date')['price_x'].mean()
+df_calendar_east = df_calendar_east.resample('M', on='date')['price_x'].mean()
+df_calendar_west = df_calendar_west.resample('M', on='date')['price_x'].mean()
+df_calendar_northeast = df_calendar_northeast.resample('M', on='date')['price_x'].mean()
+df_calendar_central = df_calendar_central.resample('M', on='date')['price_x'].mean()
+
 #Reviews data
-df_reviews = pd.read_csv("datas/reviews_1.csv")
+df_reviews = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/reviews_1.csv")
 df_reviews['date'] = pd.to_datetime(df_reviews['date'], format='%Y-%m-%d')
 df_reviews = df_reviews[(df_reviews['date']>= '2021-09-29') & (df_reviews['date']<= '2022-06-22')]
 df_reviews.head()
 
+df_reviews = df_reviews.merge(sub, left_on  = 'listing_id', right_on= 'id', how='right')
+df_reviews = df_reviews[['listing_id', 'date', 'neighbourhood_group_cleansed']]
+df_reviews_north = df_reviews[df_reviews['neighbourhood_group_cleansed']=='North Region']
+df_reviews_east = df_reviews[df_reviews['neighbourhood_group_cleansed']=='East Region']
+df_reviews_west = df_reviews[df_reviews['neighbourhood_group_cleansed']=='West Region']
+df_reviews_northeast = df_reviews[df_reviews['neighbourhood_group_cleansed']=='North-East Region']
+df_reviews_central = df_reviews[df_reviews['neighbourhood_group_cleansed']=='Central Region']
+
+df_reviews_north = df_reviews_north.resample('M', on='date')['listing_id'].count()
+df_reviews_east = df_reviews_east.resample('M', on='date')['listing_id'].count()
+df_reviews_west = df_reviews_west.resample('M', on='date')['listing_id'].count()
+df_reviews_northeast = df_reviews_northeast.resample('M', on='date')['listing_id'].count()
+df_reviews_central = df_reviews_central.resample('M', on='date')['listing_id'].count()
+
 #Resample the data
-p = df_calendar.resample('M', on='date')['price'].mean()
+p = df_calendar.resample('M', on='date')['price_x'].mean()
 r = df_reviews.resample('M', on='date')['listing_id'].count()
 
 movement = st.radio("Select The Information", ['Price History', 'Number of Reviews History'])
 import plotly.graph_objects as go
-
+holiday_date = ['2021-11-04', '2021-12-25', '2022-01-01', '2022-02-01', '2022-02-01', '2022-04-15', '2022-05-01', '2022-05-03']
 
 
 if movement == 'Price History':
+    st.subheader("Price History All Region")
     fig = go.Figure(go.Scatter(
     mode= "lines+markers",
     y = p.values,
@@ -798,7 +827,8 @@ if movement == 'Price History':
         title_text = "Price($)",
         range = [0,155]
     )
-
+    for i in holiday_date:
+        fig.add_vline(x=i, line_width=2, line_dash="dash", line_color="green")
     fig.update_layout(
         title="Price History",
         font=dict(
@@ -806,8 +836,70 @@ if movement == 'Price History':
             size=18)
     )
     st.plotly_chart(fig)
-    st.metric("Price Movement", "$8", "5.517%" )
+    st.metric("Price Movement", "+$8.25", "8.081%" )
+    st.subheader("Price History per Region")
+    fig1 = go.Figure()
+
+    fig1.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_calendar_north.values,
+    x= df_calendar_north.index,
+    name = 'North Region'))
+
+    fig1.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_calendar_east.values,
+    x= df_calendar_east.index,
+    name = 'East Region'))
+
+    fig1.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_calendar_west.values,
+    x= df_calendar_west.index,
+    name = 'West Region'))
+
+    fig1.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_calendar_northeast.values,
+    x= df_calendar_northeast.index,
+    name = 'North-East Region'))
+
+    fig1.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_calendar_central.values,
+    x= df_calendar_central.index,
+    name = 'Central Region'))
+    for i in holiday_date:
+        fig1.add_vline(x=i, line_width=2, line_dash="dash", line_color="green")
+    fig1.update_xaxes(
+        title_text = 'Month',
+        title_font = {"size":14}
+    )
+
+    fig1.update_yaxes(
+        title_text = "Price($)"
+    )
+
+    fig1.update_layout(
+        title="Price History",
+        font=dict(
+            family="Arial",
+            size=18)
+    )
+    st.plotly_chart(fig1)
+    tab001, tab002, tab003, tab004, tab005 = st.columns([1,1,1,1,1])
+    with tab001:
+        st.metric("East Region Price Movement", "+$1.7", "1.51%" )
+    with tab002:
+        st.metric("Central Region Price Movement", "+$9.98", "9.95%" )
+    with tab003:
+        st.metric("West Region Price Movement", "+$3.52", "3.83%" )
+    with tab004:
+        st.metric("North-East Region Price Movement", "+$2.1", "2.58%" )
+    with tab005:
+        st.metric("North Region Price Movement", "+$1.02", "1.28%" )
 elif movement == 'Number of Reviews History':
+    st.subheader("Number of Reviews History All Region")
     fig = go.Figure(go.Scatter(
     mode= "lines+markers",
     y = r.values,
@@ -820,7 +912,8 @@ elif movement == 'Number of Reviews History':
     fig.update_yaxes(
         title_text = "Number of Reviews"
     )
-
+    for i in holiday_date:
+        fig.add_vline(x=i, line_width=2, line_dash="dash", line_color="green")
     fig.update_layout(
         title="Number of Reviews History",
         font=dict(
@@ -828,10 +921,60 @@ elif movement == 'Number of Reviews History':
             size=18)
     )
     st.plotly_chart(fig)
+    st.subheader("Number of Reviews History Per Region")
+    figr = go.Figure()
 
+    figr.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_reviews_north.values,
+    x= df_reviews_north.index,
+    name = 'North Region'))
+
+    figr.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_reviews_east.values,
+    x= df_reviews_east.index,
+    name = 'East Region'))
+
+    figr.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_reviews_central.values,
+    x= df_reviews_central.index,
+    name = 'Central Region'))
+
+    figr.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_reviews_west.values,
+    x= df_reviews_west.index,
+    name = 'West Region'))
+
+    figr.add_trace(go.Scatter(
+    mode= "lines+markers",
+    y = df_reviews_northeast.values,
+    x= df_reviews_northeast.index,
+    name = 'North-East Region'))
+    for i in holiday_date:
+        figr.add_vline(x=i, line_width=2, line_dash="dash", line_color="green")
+    figr.update_xaxes(
+        title_text = 'Month',
+        title_font = {"size":14}
+    )
+
+    figr.update_yaxes(
+        title_text = "Number of Reviews",
+    )
+
+    figr.update_layout(
+        title="Number of Reviews History",
+        font=dict(
+            family="Arial",
+            size=18)
+    )
+    st.plotly_chart(figr)
 st.markdown('---')
 col10, col11 = st.columns([2,1])
 with col10:
     "Created by:    Yoel"
 with col11:
     "Data Obtained From :   Inside Airbnb: Get the Data "
+
