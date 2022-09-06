@@ -111,10 +111,10 @@ def add_categorical_legend(folium_map, title, colors, labels):
 
 
 #Load the data
-df1 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_1.csv")
-df2 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_2.csv")
-df3 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_3.csv")
-df4 = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/listings_4.csv")
+df1 = pd.read_csv("datas/listings_1.csv")
+df2 = pd.read_csv("datas/listings_2.csv")
+df3 = pd.read_csv("datas/listings_3.csv")
+df4 = pd.read_csv("datas/listings_4.csv")
 df = pd.concat([df1, df2, df3, df4], axis = 0)
 
 #Reset the index
@@ -330,7 +330,7 @@ ax20 = plt.xlabel('Number of Listings', fontsize = 12)
 #Visualization : Listings price on map
 fig21, ax21 = plt.subplots()
 fig21 = plt.figure(figsize = (10,8))
-i = plt.imread('C:/Users/yoelw/Downloads/singapore data/map2.png')
+i = plt.imread('datas/map2.png')
 ax21 = plt.imshow(i, zorder=0, extent=[103.638880, 103.969660,  1.245350,1.488140])
 ax21 = plt.gca()
 ax21 = sub.plot(kind = 'scatter', x='longitude', y='latitude', label = 'availabilty_365',
@@ -415,7 +415,7 @@ sub['region_code'] = code_region_list
 
 ## REGION CHOROPLETH FIX!!
 import json
-with open ("C:/Users/yoelw/Downloads/neighbourhoods.geojson", 'r') as jsonFile:
+with open ("datas/neighbourhoods.geojson", 'r') as jsonFile:
     singmapdata = json.load(jsonFile)
 
 choropleth2 = folium.Choropleth(
@@ -763,7 +763,7 @@ st.markdown("---")
 
 st.subheader("Price and Number of Reviews Movement")
 #Price data
-df_calendar = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/calendar_4.csv")
+df_calendar = pd.read_csv("datas/calendar_4.csv")
 df_calendar['date'] = pd.to_datetime(df_calendar['date'], format='%Y-%m-%d')
 df_calendar = df_calendar[(df_calendar['date']>= '2021-09-29') & (df_calendar['date']<= '2022-06-22')]
 df_calendar['price'] = df_calendar['price'].apply(lambda x: str(x).replace('$',''))
@@ -784,7 +784,7 @@ df_calendar_northeast = df_calendar_northeast.resample('M', on='date')['price_x'
 df_calendar_central = df_calendar_central.resample('M', on='date')['price_x'].mean()
 
 #Reviews data
-df_reviews = pd.read_csv("C:/Users/yoelw/Downloads/singapore data/reviews_1.csv")
+df_reviews = pd.read_csv("datas/reviews_1.csv")
 df_reviews['date'] = pd.to_datetime(df_reviews['date'], format='%Y-%m-%d')
 df_reviews = df_reviews[(df_reviews['date']>= '2021-09-29') & (df_reviews['date']<= '2022-06-22')]
 df_reviews.head()
